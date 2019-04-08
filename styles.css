@@ -1,5 +1,6 @@
 body{
     font-family: 'Roboto', sans-serif;
+    margin: 0;
 }
 
 .article {
@@ -58,4 +59,22 @@ body{
     color: #F64145;
     padding: 2px;
     text-align: center;
+}
+
+.modal{
+    background: #FFFFFF;
+    height: 80%;
+    width: 80%;
+}
+
+.search{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.search .input{
+    border: 1px solid #1C1925;
+    border-radius: 10px;
+    height: 30px;
+    width: 30%;
 }

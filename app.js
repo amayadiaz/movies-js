@@ -18,7 +18,7 @@ fetch(moviesUrl + key)
                 return response.json();
             })
             .then(videos => {
-                let template = articleTemplate(element.poster_path, element.vote_average, videos.results[0].key);
+                let template = articleTemplate(element.poster_path, element.vote_average, videos.results[0].key, element.id);
                 $articlesList.innerHTML += template;
             })
             
@@ -29,7 +29,7 @@ fetch(moviesUrl + key)
         console.log('Request failed!');
     });*/
 
-function articleTemplate(imagePath, score, urlTrailer) {
+function articleTemplate(imagePath, score, urlTrailer, idArticle) {
     return (
         `<div class="article">
             <div class="cover">
@@ -37,17 +37,14 @@ function articleTemplate(imagePath, score, urlTrailer) {
             </div>
             <div class="info">
                 <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                <a class="trailer" href="https://www.youtube.com/watch?v=${urlTrailer}" target="_blank"><span class="text">Play Trailer</span></a>
+                <a id="${idArticle}" onClick="eventClickModal(this.id)" class="trailer" href="https://www.youtube.com/watch?v=${urlTrailer}" target="_blank"><span class="text">Play Trailer</span></a>
             </div>
         </div>`
     )
 }
 
-function addClick() {
-    const $house = document.querySelector('.house');
-    $house.addEventListener("click", () => {
-        alert('Click');
-    });
+function eventClickModal(articleId) {
+    console.log(articleId);
 }
 
 
