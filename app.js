@@ -37,14 +37,23 @@ function articleTemplate(imagePath, score, urlTrailer, idArticle) {
             </div>
             <div class="info">
                 <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                <a id="${idArticle}" onClick="eventClickModal(this.id)" class="trailer" href="https://www.youtube.com/watch?v=${urlTrailer}" target="_blank"><span class="text">Play Trailer</span></a>
+                <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
             </div>
         </div>`
     )
 }
 
-function eventClickModal(articleId) {
-    console.log(articleId);
+function showTrailer(articleId) {
+    
+    const $iframe = document.getElementById('iframe-trailer');
+
+    fetch('https://api.themoviedb.org/3/movie/' + articleId + '/videos?api_key=84ff3251498b1fa0b9f22832083b3196')
+    .then(response => {
+        return response.json();
+    })
+    .then(videos => {
+        $iframe.src = 'https://www.youtube.com/embed/' + videos.results[0].key + '?&autoplay=1';
+    })
 }
 
 
