@@ -15,12 +15,12 @@
     </header>
     <div class="search">
         <input class="input" type="text" placeholder="Search Movie" />
+        <button type="button" onClick="searchMovie()"><i class="fa fa-search"></i></button>
     </div>
     <div id="articles-list"></div>
-    <div class="modal">
-        <iframe id="iframe-trailer" width="800" height="315"
-        src=""frameborder="0" 
-        allowfullscreen></iframe>
+    <div class="modal hidden">
+        <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
+        <iframe id="iframe-trailer" src="" frameborder="0" allowfullscreen></iframe>
     </div>
     <script src="app.js"></script>
 </body>

@@ -13,15 +13,8 @@ fetch(moviesUrl + key)
 
         data.results.forEach(element => {
 
-            fetch('https://api.themoviedb.org/3/movie/' + element.id + '/videos?api_key=84ff3251498b1fa0b9f22832083b3196')
-            .then(response => {
-                return response.json();
-            })
-            .then(videos => {
-                let template = articleTemplate(element.poster_path, element.vote_average, videos.results[0].key, element.id);
-                $articlesList.innerHTML += template;
-            })
-            
+            let template = articleTemplate(element.poster_path, element.vote_average, element.id);
+            $articlesList.innerHTML += template;            
             
         });
     })
@@ -29,7 +22,53 @@ fetch(moviesUrl + key)
         console.log('Request failed!');
     });*/
 
-function articleTemplate(imagePath, score, urlTrailer, idArticle) {
+
+
+function showTrailer(articleId) {
+    
+    const $iframe = document.getElementById('iframe-trailer');
+
+    fetch('https://api.themoviedb.org/3/movie/' + articleId + '/videos?api_key=84ff3251498b1fa0b9f22832083b3196')
+    .then(response => {
+        return response.json();
+    })
+    .then(videos => {
+        $iframe.src = 'https://www.youtube.com/embed/' + videos.results[0].key + '?&autoplay=1';
+    })
+
+    const $modal = document.querySelector('.modal');
+    $modal.classList.remove('hidden');
+}
+
+function closeTrailer() {
+    const $modal = document.querySelector('.modal');
+    $modal.classList.add('hidden');
+    const $iframe = document.getElementById('iframe-trailer');
+    $iframe.setAttribute('src', '');
+
+}
+
+function searchMovie() {
+
+    $articlesList.innerHTML = "";
+
+    const querySearch = document.querySelector('input');
+
+    fetch('https://api.themoviedb.org/3/search/movie?api_key=84ff3251498b1fa0b9f22832083b3196&query=' + querySearch.value)
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        data.results.forEach(element => {
+            let template = articleTemplate(element.poster_path, element.vote_average, element.id);
+            $articlesList.innerHTML += template;
+        });
+        
+    })
+    
+}
+
+function articleTemplate(imagePath, score, idArticle) {
     return (
         `<div class="article">
             <div class="cover">
@@ -43,18 +82,7 @@ function articleTemplate(imagePath, score, urlTrailer, idArticle) {
     )
 }
 
-function showTrailer(articleId) {
-    
-    const $iframe = document.getElementById('iframe-trailer');
 
-    fetch('https://api.themoviedb.org/3/movie/' + articleId + '/videos?api_key=84ff3251498b1fa0b9f22832083b3196')
-    .then(response => {
-        return response.json();
-    })
-    .then(videos => {
-        $iframe.src = 'https://www.youtube.com/embed/' + videos.results[0].key + '?&autoplay=1';
-    })
-}
 
 
 
