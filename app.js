@@ -3,6 +3,21 @@ const $articlesList = document.getElementById('articles-list');
 
 const moviesUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=';
 
+
+
+let storedList =  JSON.parse(localStorage.getItem('favorites'));
+
+console.log(storedList);
+
+let favoritesList = [];
+
+if(storedList == null){
+    localStorage.setItem('favorites', JSON.stringify(favoritesList));
+}else{
+    favoritesList = storedList;
+}
+
+
 const key = '84ff3251498b1fa0b9f22832083b3196';
 
 fetch(moviesUrl + key)
@@ -76,10 +91,39 @@ function articleTemplate(imagePath, score, idArticle) {
             </div>
             <div class="info">
                 <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
+                <div id="${idArticle}" class="like" onClick="addFavorite(this.id)"><i class="far fa-heart icon"></i></span></div>
+                <a id="${idArticle}" onClick="showTrailer(this.id, this)" class="trailer"><span class="text">Play Trailer</span></a>
             </div>
         </div>`
     )
+}
+
+function addFavorite(articleId) {
+ 
+    const querySelector = document.querySelector('.fa-heart');
+    querySelector.classList.remove('far');
+    querySelector.classList.add('fas');
+    favoritesList.push(articleId);
+    localStorage.setItem('favorites', JSON.stringify(favoritesList));
+
+
+}
+
+function showFavorites() {
+    $articlesList.innerHTML = '';
+
+    storedList.forEach(element => {
+        fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=' + key)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            
+            let template = articleTemplate(data.poster_path, data.vote_average, data.id);
+            $articlesList.innerHTML += template;
+           
+        })
+    });
 }
 
 

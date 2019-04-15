@@ -11,16 +11,26 @@
 </head>
 <body>
     <header class="header">
-        <h1>Movies JS</h1>
+        <h2 class="title">MOVIES JS</h2>
+        <p class="favorites" onClick="showFavorites()"><i class="icon fas fa-star"></i>My Favorites</p>
+        <p class="username"><i class="fas fa-user"></i>Anonymus</p>
     </header>
     <div class="search">
         <input class="input" type="text" placeholder="Search Movie" />
-        <button type="button" onClick="searchMovie()"><i class="fa fa-search"></i></button>
+        <button class="button" type="button" onClick="searchMovie()"><i class="fa fa-search"></i></button>
     </div>
     <div id="articles-list"></div>
     <div class="modal hidden">
         <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
         <iframe id="iframe-trailer" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="modal modal-name hidden">
+        <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
+        <input class="input-user" type="text" />
+    </div>
+    <div class="modal-name">
+        <input class="input-name" type="text" /> 
+        <button class="button" type="button" onClick="addName()"><i class="fa fa-search"></i></button>
     </div>
     <script src="app.js"></script>
 </body>
