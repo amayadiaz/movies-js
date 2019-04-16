@@ -33,10 +33,6 @@ fetch(moviesUrl + key)
             
         });
     })
-    /*.catch(function() {
-        console.log('Request failed!');
-    });*/
-
 
 
 function showTrailer(articleId) {
@@ -75,7 +71,8 @@ function searchMovie() {
     })
     .then(data => {
         data.results.forEach(element => {
-            let template = articleTemplate(element.poster_path, element.vote_average, element.id);
+            let favorite = favoritesList.includes(element.id.toString());
+            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
             $articlesList.innerHTML += template;
         });
         
@@ -83,7 +80,17 @@ function searchMovie() {
     
 }
 
-function articleTemplate(imagePath, score, idArticle) {
+function articleTemplate(imagePath, score, idArticle, favorite) {
+
+    console.log(favorite);
+    
+
+    let iconHeart = '<i class="far fa-heart icon"></i>';
+
+    if(favorite){
+        iconHeart = '<i class="fas fa-heart icon"></i>';
+    }
+
     return (
         `<div class="article">
             <div class="cover">
@@ -91,21 +98,20 @@ function articleTemplate(imagePath, score, idArticle) {
             </div>
             <div class="info">
                 <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                <div id="${idArticle}" class="like" onClick="addFavorite(this.id)"><i class="far fa-heart icon"></i></span></div>
-                <a id="${idArticle}" onClick="showTrailer(this.id, this)" class="trailer"><span class="text">Play Trailer</span></a>
+                <div id="${idArticle}" class="like" onClick="addFavorite(this.id, this)">`+iconHeart+`</span></div>
+                <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
             </div>
         </div>`
     )
 }
 
-function addFavorite(articleId) {
- 
-    const querySelector = document.querySelector('.fa-heart');
-    querySelector.classList.remove('far');
-    querySelector.classList.add('fas');
+function addFavorite(articleId, element) {
+
+    element.childNodes[0].classList.remove('far');
+    element.childNodes[0].classList.add('fas');
+    
     favoritesList.push(articleId);
     localStorage.setItem('favorites', JSON.stringify(favoritesList));
-
 
 }
 
