@@ -7,8 +7,6 @@ const moviesUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=';
 
 let storedList =  JSON.parse(localStorage.getItem('favorites'));
 
-console.log(storedList);
-
 let favoritesList = [];
 
 if(storedList == null){
@@ -27,8 +25,10 @@ fetch(moviesUrl + key)
     .then(function(data) {
 
         data.results.forEach(element => {
+            
+            let favorite = favoritesList.includes(element.id.toString());
 
-            let template = articleTemplate(element.poster_path, element.vote_average, element.id);
+            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
             $articlesList.innerHTML += template;            
             
         });
@@ -71,7 +71,9 @@ function searchMovie() {
     })
     .then(data => {
         data.results.forEach(element => {
+            
             let favorite = favoritesList.includes(element.id.toString());
+
             let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
             $articlesList.innerHTML += template;
         });
@@ -81,10 +83,7 @@ function searchMovie() {
 }
 
 function articleTemplate(imagePath, score, idArticle, favorite) {
-
-    console.log(favorite);
     
-
     let iconHeart = '<i class="far fa-heart icon"></i>';
 
     if(favorite){
@@ -125,11 +124,16 @@ function showFavorites() {
         })
         .then(data => {
             
-            let template = articleTemplate(data.poster_path, data.vote_average, data.id);
+            let template = articleTemplate(data.poster_path, data.vote_average, data.id, true);
             $articlesList.innerHTML += template;
            
         })
     });
+}
+
+function nextPage(element) {
+    console.log(element.textContent);
+    
 }
 
 
