@@ -132,7 +132,24 @@ function showFavorites() {
 }
 
 function nextPage(element) {
-    console.log(element.textContent);
+    const page = element.textContent;
+
+    $articlesList.innerHTML = "";
+
+    fetch('https://api.themoviedb.org/3/trending/movie/week?api_key=84ff3251498b1fa0b9f22832083b3196&page=' + page)
+    .then(response => {
+        return response.json();
+    })
+    .then(data => {
+        data.results.forEach(element => {
+            
+            let favorite = favoritesList.includes(element.id.toString());
+
+            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
+            $articlesList.innerHTML += template;            
+            
+        });
+    })
     
 }
 
