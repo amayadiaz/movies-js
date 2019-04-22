@@ -14,7 +14,7 @@
     <header class="header">
         <h2 class="title">MOVIES JS</h2>
         <p class="favorites" onClick="showFavorites()"><i class="icon fas fa-star"></i>My Favorites</p>
-        <p class="username"><i class="fas fa-user"></i>Anonymus</p>
+        <p class="user-container"><i class="fas fa-user"></i><span class="username">Anonymus</span></p>
     </header>
     <div class="search">
         <input class="input" type="text" placeholder="Search Movie" />
@@ -34,7 +34,7 @@
         <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
         <iframe id="iframe-trailer" src="" frameborder="0" allowfullscreen></iframe>
     </div>
-    <div class="modal">
+    <div class="modal modal-name hidden">
         <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
         <input class="input-name" type="text" placeholder="What's your name ?" />
         <button class="button-name" type="button" onClick="addName()"><i class="fa fa-check"></i>Confirm Name</button>

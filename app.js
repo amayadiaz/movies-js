@@ -6,14 +6,27 @@ const moviesUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=';
 
 let storedList =  JSON.parse(localStorage.getItem('favorites'));
 
+let storedName =  localStorage.getItem('name');
+
+const modalName = document.querySelector('.modal-name');
 
 let favoritesList = [];
 
-const defaultUser = 'No Name';
+let defaultUser = 'No Name';
 
-favoritesList = verifyStorage('List', storedList, 'favorites', favoritesList);
+favoritesList = verifyStorage(storedList, 'favorites',  JSON.stringify(favoritesList));
 
-console.log(favoritesList);
+defaultUser = verifyStorage(storedName, 'name', defaultUser);
+
+if(defaultUser === 'No Name'){
+    modalName.classList.remove('hidden');
+}
+
+const $username = document.querySelector('.username');
+
+
+$username.textContent = defaultUser;
+
 
 
 
@@ -166,22 +179,25 @@ function nextPage(element) {
 }
 
 function addName(){
-    const $username = document.querySelector('.username');
+    
+    const newName = document.querySelector('.input-name').value;
+    $username.textContent = newName;
+    localStorage.setItem('name', newName);
+
+    modalName.classList.add('hidden');
+
 }
 
-function verifyStorage(type, storage, storageItem, defaultValue) {
+function verifyStorage(storage, storageItem, defaultValue) {
     
-    if(type === 'String'){
-
+    if(storage == null){
+        localStorage.setItem(storageItem, defaultValue);
     }else{
-        if(storage == null){
-            localStorage.setItem(storageItem, JSON.stringify(defaultValue));
-            return defaultValue;
-        }else{
-            defaulValue = storage;
-            return defaultValue;
-        }
+        defaultValue = storage;
     }
+
+    return defaultValue;
+    
 
 }
 
