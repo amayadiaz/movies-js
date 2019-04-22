@@ -1,24 +1,26 @@
 
-const $articlesList = document.getElementById('articles-list');
+// MAIN 
+const apiURL = 'https://api.themoviedb.org/3/';
 
-const moviesUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=';
+const keyURL = 'api_key=84ff3251498b1fa0b9f22832083b3196&page=';
+
+const $articlesList = document.getElementById('articles-list');
 
 
 let storedList =  JSON.parse(localStorage.getItem('favorites'));
-
 let storedName =  localStorage.getItem('name');
 
 const modalName = document.querySelector('.modal-name');
 
 let favoritesList = [];
 
-let defaultUser = 'No Name';
+let defaultUser = 'User';
 
 favoritesList = verifyStorage(storedList, 'favorites',  JSON.stringify(favoritesList));
 
 defaultUser = verifyStorage(storedName, 'name', defaultUser);
 
-if(defaultUser === 'No Name'){
+if(defaultUser === 'User'){
     modalName.classList.remove('hidden');
 }
 
@@ -40,10 +42,12 @@ $inputSearch.addEventListener("keyup", function(event) {
 })
 
 
+displayArticles('trending/movie/week?', '1');
 
-const key = '84ff3251498b1fa0b9f22832083b3196';
+// FUNCTIONS 
+function displayArticles(requestURL, page) {
 
-fetch(moviesUrl + key)
+    fetch(apiURL + requestURL + keyURL + page)
     .then(function(response) {
         return response.json();
     })
@@ -51,15 +55,16 @@ fetch(moviesUrl + key)
 
         data.results.forEach(element => {
             
-            let favorite = favoritesList.includes(element.id.toString());
+            let isFavorite = favoritesList.includes(element.id.toString());
 
-            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
-            $articlesList.innerHTML += template;            
+            let article = articleTemplate(element.poster_path, element.vote_average, element.id, isFavorite);
+
+            $articlesList.innerHTML += article;            
             
         });
     })
-
-
+}
+ 
 function showTrailer(articleId) {
     
     const $iframe = document.getElementById('iframe-trailer');
@@ -90,20 +95,9 @@ function searchMovie() {
 
     const querySearch = document.querySelector('input');
 
-    fetch('https://api.themoviedb.org/3/search/movie?api_key=84ff3251498b1fa0b9f22832083b3196&query=' + querySearch.value)
-    .then(response => {
-        return response.json();
-    })
-    .then(data => {
-        data.results.forEach(element => {
-            
-            let favorite = favoritesList.includes(element.id.toString());
+    let requestURL = 'search/movie?&query=' + querySearch.value + '&';
 
-            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
-            $articlesList.innerHTML += template;
-        });
-        
-    })
+    displayArticles(requestURL);
     
 }
 
@@ -161,20 +155,7 @@ function nextPage(element) {
 
     $articlesList.innerHTML = "";
 
-    fetch('https://api.themoviedb.org/3/trending/movie/week?api_key=84ff3251498b1fa0b9f22832083b3196&page=' + page )
-    .then(response => {
-        return response.json();
-    })
-    .then(data => {
-        data.results.forEach(element => {
-            
-            let favorite = favoritesList.includes(element.id.toString());
-
-            let template = articleTemplate(element.poster_path, element.vote_average, element.id, favorite);
-            $articlesList.innerHTML += template;            
-            
-        });
-    })
+    displayArticles('trending/movie/week?', page);
     
 }
 
@@ -198,7 +179,6 @@ function verifyStorage(storage, storageItem, defaultValue) {
 
     return defaultValue;
     
-
 }
 
 
