@@ -58,6 +58,11 @@ body{
     color: #E1BE22;
 }
 
+.grid-container{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
 .header{
     background: #1C1925;
     color: #F64145;

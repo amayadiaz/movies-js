@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <header class="header">
@@ -28,10 +29,15 @@
             <li onClick="nextPage(this)">5</li>
         </ul>
     </div>
-    <div id="articles-list"></div>
+    <div id="articles-list" class="grid-container"></div>
     <div class="modal hidden">
         <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
         <iframe id="iframe-trailer" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="modal">
+        <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>
+        <input class="input-name" type="text" placeholder="What's your name ?" />
+        <button class="button-name" type="button" onClick="addName()"><i class="fa fa-check"></i>Confirm Name</button>
     </div>
     <script src="app.js"></script>
 </body>

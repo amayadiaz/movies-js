@@ -4,16 +4,28 @@ const $articlesList = document.getElementById('articles-list');
 const moviesUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=';
 
 
-
 let storedList =  JSON.parse(localStorage.getItem('favorites'));
+
 
 let favoritesList = [];
 
-if(storedList == null){
-    localStorage.setItem('favorites', JSON.stringify(favoritesList));
-}else{
-    favoritesList = storedList;
-}
+const defaultUser = 'No Name';
+
+favoritesList = verifyStorage('List', storedList, 'favorites', favoritesList);
+
+console.log(favoritesList);
+
+
+
+const $inputSearch = document.querySelector('.input');
+
+$inputSearch.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.querySelector('.button').click();
+    }
+})
+
 
 
 const key = '84ff3251498b1fa0b9f22832083b3196';
@@ -91,7 +103,7 @@ function articleTemplate(imagePath, score, idArticle, favorite) {
     }
 
     return (
-        `<div class="article">
+        `<div class="article grid-item">
             <div class="cover">
                 <img class="img" src="https://image.tmdb.org/t/p/original${imagePath}" alt="" />
             </div>
@@ -136,7 +148,7 @@ function nextPage(element) {
 
     $articlesList.innerHTML = "";
 
-    fetch('https://api.themoviedb.org/3/trending/movie/week?api_key=84ff3251498b1fa0b9f22832083b3196&page=' + page)
+    fetch('https://api.themoviedb.org/3/trending/movie/week?api_key=84ff3251498b1fa0b9f22832083b3196&page=' + page )
     .then(response => {
         return response.json();
     })
@@ -151,6 +163,26 @@ function nextPage(element) {
         });
     })
     
+}
+
+function addName(){
+    const $username = document.querySelector('.username');
+}
+
+function verifyStorage(type, storage, storageItem, defaultValue) {
+    
+    if(type === 'String'){
+
+    }else{
+        if(storage == null){
+            localStorage.setItem(storageItem, JSON.stringify(defaultValue));
+            return defaultValue;
+        }else{
+            defaulValue = storage;
+            return defaultValue;
+        }
+    }
+
 }
 
 
