@@ -39,10 +39,10 @@ $inputSearch.addEventListener("keyup", function(event) {
     }
 })
 
-loadData('trending/movie/week?', '1', false);
+loadData('trending/movie/week?', '1');
 
 // FUNCTIONS 
-function loadData(requestURL, page, showFavorites) {
+function loadData(requestURL, page) {
 
     fetch(apiURL + requestURL + keyURL + page)
     .then(function(response) {
@@ -50,43 +50,27 @@ function loadData(requestURL, page, showFavorites) {
     })
     .then(function(data) {
 
-        displayArticles(data, showFavorites);
+        displayArticles(data);
 
     })
 }
 
 function displayArticles(data, showFavorites){
 
-    if (showFavorites) {
-
-        data.results.forEach(element => {
-    
-            let article = articleTemplate(element.poster_path, element.vote_average, element.id, isFavorite);
-    
-            $articlesList.innerHTML += article;            
-            
-        });
+    data.results.forEach(element => {
         
-    } else {
+        let isFavorite = favoritesList.includes(element.id.toString());
 
-        data.results.forEach(element => {
-            
-            let isFavorite = favoritesList.includes(element.id.toString());
-    
-            let article = articleTemplate(element.poster_path, element.vote_average, element.id, isFavorite);
-    
-            $articlesList.innerHTML += article;            
-            
-        });
-
-    }
+        assignTemplate(element.poster_path, element.vote_average, element.id, isFavorite);           
+        
+    });
 
 }
 
-/*function assignTemplate(poster, vote_average, id, isFavorite) {
+function assignTemplate(poster, vote_average, id, isFavorite) {
     let article = articleTemplate(poster, vote_average, id, isFavorite);
     $articlesList.innerHTML += article; 
-}*/
+}
  
 function showTrailer(articleId) {
     
@@ -120,7 +104,7 @@ function searchMovie() {
 
     let requestURL = 'search/movie?&query=' + querySearch.value + '&';
 
-    loadData(requestURL, '1', false);
+    loadData(requestURL, '1');
     
 }
 
@@ -161,16 +145,13 @@ function showFavorites() {
 
     storedList.forEach(element => {
 
-        // loadData(); 
-
-        fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=' + key)
+        fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=84ff3251498b1fa0b9f22832083b3196')
         .then(response => {
             return response.json();
         })
         .then(data => {
-            
-            let template = articleTemplate(data.poster_path, data.vote_average, data.id, true);
-            $articlesList.innerHTML += template;
+
+            assignTemplate(data.poster_path, data.vote_average, data.id, true);
            
         })
     });
@@ -181,7 +162,7 @@ function nextPage(element) {
 
     $articlesList.innerHTML = "";
 
-    loadData('trending/movie/week?', page, false);
+    loadData('trending/movie/week?', page);
     
 }
 
