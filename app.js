@@ -30,8 +30,6 @@ const $username = document.querySelector('.username');
 $username.textContent = defaultUser;
 
 
-
-
 const $inputSearch = document.querySelector('.input');
 
 $inputSearch.addEventListener("keyup", function(event) {
@@ -41,11 +39,10 @@ $inputSearch.addEventListener("keyup", function(event) {
     }
 })
 
-
-displayArticles('trending/movie/week?', '1');
+loadData('trending/movie/week?', '1', false);
 
 // FUNCTIONS 
-function displayArticles(requestURL, page) {
+function loadData(requestURL, page, showFavorites) {
 
     fetch(apiURL + requestURL + keyURL + page)
     .then(function(response) {
@@ -53,17 +50,43 @@ function displayArticles(requestURL, page) {
     })
     .then(function(data) {
 
+        displayArticles(data, showFavorites);
+
+    })
+}
+
+function displayArticles(data, showFavorites){
+
+    if (showFavorites) {
+
         data.results.forEach(element => {
-            
-            let isFavorite = favoritesList.includes(element.id.toString());
-
+    
             let article = articleTemplate(element.poster_path, element.vote_average, element.id, isFavorite);
-
+    
             $articlesList.innerHTML += article;            
             
         });
-    })
+        
+    } else {
+
+        data.results.forEach(element => {
+            
+            let isFavorite = favoritesList.includes(element.id.toString());
+    
+            let article = articleTemplate(element.poster_path, element.vote_average, element.id, isFavorite);
+    
+            $articlesList.innerHTML += article;            
+            
+        });
+
+    }
+
 }
+
+/*function assignTemplate(poster, vote_average, id, isFavorite) {
+    let article = articleTemplate(poster, vote_average, id, isFavorite);
+    $articlesList.innerHTML += article; 
+}*/
  
 function showTrailer(articleId) {
     
@@ -97,15 +120,15 @@ function searchMovie() {
 
     let requestURL = 'search/movie?&query=' + querySearch.value + '&';
 
-    displayArticles(requestURL);
+    loadData(requestURL, '1', false);
     
 }
 
-function articleTemplate(imagePath, score, idArticle, favorite) {
+function articleTemplate(imagePath, score, idArticle, isFavorite) {
     
     let iconHeart = '<i class="far fa-heart icon"></i>';
 
-    if(favorite){
+    if(isFavorite){
         iconHeart = '<i class="fas fa-heart icon"></i>';
     }
 
@@ -137,6 +160,9 @@ function showFavorites() {
     $articlesList.innerHTML = '';
 
     storedList.forEach(element => {
+
+        // loadData(); 
+
         fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=' + key)
         .then(response => {
             return response.json();
@@ -155,7 +181,7 @@ function nextPage(element) {
 
     $articlesList.innerHTML = "";
 
-    displayArticles('trending/movie/week?', page);
+    loadData('trending/movie/week?', page, false);
     
 }
 
