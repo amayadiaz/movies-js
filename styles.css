@@ -1,4 +1,5 @@
 body{
+    background: #3C3E40;
     font-family: 'Roboto', sans-serif;
     margin: 0;
 }
@@ -114,6 +115,11 @@ body{
     max-height: 100%;
 }
 
+.modal-name .title{
+    color: #F64145;
+    font-size: 24px;
+}
+
 
 .modal .icon-close{
     color: #FFFFFF;
@@ -140,6 +146,16 @@ body{
     font-size: 22px;
 }
 
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+
 .search{
     margin-top: 10px;
     margin-left: 10px;
@@ -147,7 +163,7 @@ body{
     width: 60%;
 }
 
-.search .input{
+.search .input-search{
     border: 1px solid #1C1925;
     height: 30px;
     width: 30%;
@@ -188,3 +204,24 @@ body{
     font-size: 16px;
     cursor: pointer;
 }
+
+.modal-name .input-name{
+    border: 1px solid #1C1925;
+    height: 30px;
+    width: 30%;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.modal-name .button-name{
+    background-color: #1D1A26; /* Green */
+    border: none;
+    color: #F64145;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+

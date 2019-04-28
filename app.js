@@ -1,37 +1,40 @@
 
-// MAIN 
-const apiURL = 'https://api.themoviedb.org/3/';
+// VARIABLES 
 
-const keyURL = 'api_key=84ff3251498b1fa0b9f22832083b3196&page=';
+// Default
+const apiUrl = 'https://api.themoviedb.org/3/';
+const keyUrl = 'api_key=84ff3251498b1fa0b9f22832083b3196&page=';
+let defaultFavorites = [];
+let defaultName = 'User';
 
+// Elements
 const $articlesList = document.getElementById('articles-list');
+const $modalName = document.querySelector('.modal-name');
+const $username = document.querySelector('.username');
+const $inputSearch = document.querySelector('.input-search');
 
+// Storage
+let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
+let nameStorage =  localStorage.getItem('name');
 
-let storedList =  JSON.parse(localStorage.getItem('favorites'));
-let storedName =  localStorage.getItem('name');
+// END VARIABLES
 
-const modalName = document.querySelector('.modal-name');
+// MAIN
 
-let favoritesList = [];
+// Assign current storage to variable
+defaultFavorites = verifyStorage(favoritesStorage, 'favorites',  JSON.stringify(defaultFavorites));
+defaultName = verifyStorage(nameStorage, 'name', defaultName);
 
-let defaultUser = 'User';
-
-favoritesList = verifyStorage(storedList, 'favorites',  JSON.stringify(favoritesList));
-
-defaultUser = verifyStorage(storedName, 'name', defaultUser);
-
-if(defaultUser === 'User'){
+// Verify if storage variable is default, if is true show the modal to request name
+if(defaultName === 'User'){
     modalName.classList.remove('hidden');
 }
 
-const $username = document.querySelector('.username');
+// Assign username value 
+$username.textContent = defaultName;
 
 
-$username.textContent = defaultUser;
-
-
-const $inputSearch = document.querySelector('.input');
-
+// Add event enter to Input Search
 $inputSearch.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
@@ -39,12 +42,17 @@ $inputSearch.addEventListener("keyup", function(event) {
     }
 })
 
+// First Fetch call
 loadData('trending/movie/week?', '1');
 
-// FUNCTIONS 
-function loadData(requestURL, page) {
+// END MAIN
 
-    fetch(apiURL + requestURL + keyURL + page)
+
+// FUNCTIONS 
+
+function loadData(requestUrl, page) {
+
+    fetch(apiUrl + requestUrl + keyUrl + page)
     .then(function(response) {
         return response.json();
     })
@@ -55,17 +63,19 @@ function loadData(requestURL, page) {
     })
 }
 
-function displayArticles(data, showFavorites){
+
+function displayArticles(data){
 
     data.results.forEach(element => {
         
-        let isFavorite = favoritesList.includes(element.id.toString());
+        let isFavorite = defaultFavorites.includes(element.id.toString());
 
         assignTemplate(element.poster_path, element.vote_average, element.id, isFavorite);           
         
     });
 
 }
+
 
 function assignTemplate(poster, vote_average, id, isFavorite) {
     let article = articleTemplate(poster, vote_average, id, isFavorite);
@@ -102,9 +112,9 @@ function searchMovie() {
 
     const querySearch = document.querySelector('input');
 
-    let requestURL = 'search/movie?&query=' + querySearch.value + '&';
+    let requestUrl = 'search/movie?&query=' + querySearch.value + '&';
 
-    loadData(requestURL, '1');
+    loadData(requestUrl, '1');
     
 }
 
@@ -135,15 +145,15 @@ function addFavorite(articleId, element) {
     element.childNodes[0].classList.remove('far');
     element.childNodes[0].classList.add('fas');
     
-    favoritesList.push(articleId);
-    localStorage.setItem('favorites', JSON.stringify(favoritesList));
+    defaultFavorites.push(articleId);
+    localStorage.setItem('favorites', JSON.stringify(defaultFavorites));
 
 }
 
 function showFavorites() {
     $articlesList.innerHTML = '';
 
-    storedList.forEach(element => {
+    favoritesStorage.forEach(element => {
 
         fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=84ff3251498b1fa0b9f22832083b3196')
         .then(response => {
@@ -187,6 +197,7 @@ function verifyStorage(storage, storageItem, defaultValue) {
     return defaultValue;
     
 }
+// END FUNCTIONS
 
 
 
