@@ -75,6 +75,11 @@ body{
     margin-left: 30px;
 }
 
+.header .title a{
+    color: #F64145;
+    text-decoration: none;
+}
+
 .header .user-container{
     display: inline-block;
     float: right;
@@ -205,6 +210,20 @@ body{
     cursor: pointer;
 }
 
+.modal-name{
+    background: #3A3634;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 60%;
+    max-width: 80%;
+    height: 40%;
+    max-height: 100%;
+}
+
 .modal-name .input-name{
     border: 1px solid #1C1925;
     height: 30px;
@@ -222,6 +241,16 @@ body{
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+}
+
+.modal-name .title{
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.modal-name .description{
+    color: #FFFFFF;
+    font-size: 20px;
 }
 
 

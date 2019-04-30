@@ -12,6 +12,7 @@ const $articlesList = document.getElementById('articles-list');
 const $modalName = document.querySelector('.modal-name');
 const $username = document.querySelector('.username');
 const $inputSearch = document.querySelector('.input-search');
+const $inputName = document.querySelector('.input-name');
 
 // Storage
 let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
@@ -27,7 +28,7 @@ defaultName = verifyStorage(nameStorage, 'name', defaultName);
 
 // Verify if storage variable is default, if is true show the modal to request name
 if(defaultName === 'User'){
-    modalName.classList.remove('hidden');
+    $modalName.classList.remove('hidden');
 }
 
 // Assign username value 
@@ -35,12 +36,9 @@ $username.textContent = defaultName;
 
 
 // Add event enter to Input Search
-$inputSearch.addEventListener("keyup", function(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        document.querySelector('.button').click();
-    }
-})
+addEnterEvent($inputSearch, '.button');
+addEnterEvent($inputName, '.button-name');
+
 
 // First Fetch call
 loadData('trending/movie/week?', '1');
@@ -182,7 +180,8 @@ function addName(){
     $username.textContent = newName;
     localStorage.setItem('name', newName);
 
-    modalName.classList.add('hidden');
+
+    $modalName.classList.add('hidden');
 
 }
 
@@ -196,6 +195,15 @@ function verifyStorage(storage, storageItem, defaultValue) {
 
     return defaultValue;
     
+}
+
+function addEnterEvent(element, button) {
+    element.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.querySelector(button).click();
+        }
+    })
 }
 // END FUNCTIONS
 
