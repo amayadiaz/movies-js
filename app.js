@@ -36,7 +36,7 @@ $username.textContent = defaultName;
 
 
 // Add event enter to Input Search
-addEnterEvent($inputSearch, '.button');
+// addEnterEvent($inputSearch, '.button');
 addEnterEvent($inputName, '.button-name');
 
 
@@ -125,7 +125,7 @@ function articleTemplate(imagePath, score, idArticle, isFavorite) {
     }
 
     return (
-        `<div class="article grid-item">
+        `<div class="article item">
             <div class="cover">
                 <img class="img" src="https://image.tmdb.org/t/p/original${imagePath}" alt="" />
             </div>

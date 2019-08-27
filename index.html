@@ -16,20 +16,21 @@
         <p class="favorites" onClick="showFavorites()"><i class="icon fas fa-star"></i>My Favorites</p>
         <p class="user-container"><i class="fas fa-user"></i><span class="username">Anonymus</span></p>
     </header>
-    <div class="search">
-        <input class="input-search" type="text" placeholder="Search Movie" />
-        <button class="button" type="button" onClick="searchMovie()"><i class="fa fa-search"></i></button>
+    <div class="container-filters">
+        <!--<div class="search">
+            <input class="input-search" type="text" placeholder="Search Movie" />
+        </div>-->
+        <div class="pagination">
+            <ul>
+                <li onClick="nextPage(this)">1</li>
+                <li onClick="nextPage(this)">2</li>
+                <li onClick="nextPage(this)">3</li>
+                <li onClick="nextPage(this)">4</li>
+                <li onClick="nextPage(this)">5</li>
+            </ul>
+        </div>
     </div>
-    <div class="pagination">
-        <ul>
-            <li onClick="nextPage(this)">1</li>
-            <li onClick="nextPage(this)">2</li>
-            <li onClick="nextPage(this)">3</li>
-            <li onClick="nextPage(this)">4</li>
-            <li onClick="nextPage(this)">5</li>
-        </ul>
-    </div>
-    <div id="articles-list" class="grid-container">
+    <div id="articles-list" class="container-articles">
     </div>
     <div class="modal hidden">
         <i class="fas fa-times icon-close" onClick="closeTrailer()"></i>

@@ -6,25 +6,24 @@ body{
 
 .article {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-    display: inline-block;
-    height: 395px;
-    width: 250px;
-    margin: 10px;
 }
-.article .cover {
-    width: 250px;
+
+.article .cover{
     height: 330px;
 }
+
 .article .cover .img {
-    width: 250px;
+    width: 100%;
     height: 330px;
 }
+
 .article .info {
     background-color: #1D1A26;
     width: 250px;
     height: 65px;
     text-align: center;
 }
+
 .article .info .score {
     color: #FFFFFF;
     text-align: center;
@@ -57,11 +56,6 @@ body{
 
 .favorites .icon{
     color: #E1BE22;
-}
-
-.grid-container{
-    display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
 }
 
 .header{
@@ -151,51 +145,6 @@ body{
     font-size: 22px;
 }
 
-.loader {
-    border: 16px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 16px solid #3498db;
-    width: 120px;
-    height: 120px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
-  }
-
-.search{
-    margin-top: 10px;
-    margin-left: 10px;
-    display: inline-block;
-    width: 60%;
-}
-
-.search .input-search{
-    border: 1px solid #1C1925;
-    height: 30px;
-    width: 30%;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.search .button{
-    background-color: #1D1A26; /* Green */
-    border: none;
-    color: #F64145;
-    padding: 8px 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-
-.pagination{
-    display: inline-block;
-    float: right;
-}
-
-.pagination ul{
-    margin: 5px 20px;
-}
-
 .pagination ul li{
     display: inline-block;
     padding: 0;
@@ -253,4 +202,16 @@ body{
     font-size: 20px;
 }
 
+.container-articles{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 250px);
+    justify-content: center;
+    grid-gap: 15px;
+}
+
+.container-filters{
+    display: grid;
+    grid-template-columns: repeat(1, 250px);
+    justify-content: center;
+}
 
