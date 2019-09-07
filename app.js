@@ -4,6 +4,7 @@ const apiKeyUrl = 'api_key=84ff3251498b1fa0b9f22832083b3196&page=';
 
 let defaultFavorites = [];
 let defaultName = 'User';
+let requestUrl = 'trending/movie/week?';
 
 // Elements Variables
 const $articlesList = document.getElementById('articles-list');
@@ -11,6 +12,7 @@ const $modalName = document.querySelector('.modal-name');
 const $userName = document.querySelector('.username');
 const $inputSearch = document.querySelector('.input-search');
 const $inputName = document.querySelector('.input-name');
+const $pagination = document.querySelector('.pagination');
 
 // Storage Variables
 let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
@@ -61,6 +63,8 @@ const displayArticles = (data) => {
         
     });
 
+    createPaginationElements(data.total_pages);
+
 }
 
 const assignTemplate = (poster, vote_average, id, isFavorite) => {
@@ -70,24 +74,30 @@ const assignTemplate = (poster, vote_average, id, isFavorite) => {
 
 const articleTemplate = (imagePath, score, idArticle, isFavorite) => {
     
-    let iconHeart = '<i class="far fa-heart icon"></i>';
+    let iconHeart = '<i class="far fa-bookmark icon"></i>';
 
     if(isFavorite){
-        iconHeart = '<i class="fas fa-heart icon"></i>';
+        iconHeart = '<i class="fas fa-bookmark icon"></i>';
     }
-
-    return (
-        `<div class="article grid-item">
-            <div class="cover">
-                <img class="img" src="https://image.tmdb.org/t/p/original${imagePath}" alt="" />
-            </div>
-            <div class="info">
-                <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                <div id="${idArticle}" class="like" onClick="addFavorite(this.id, this)">`+iconHeart+`</span></div>
-                <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
-            </div>
-        </div>`
-    )
+    
+    if (imagePath != null) {
+        return (
+            `<div class="article grid-item">
+                <div class="cover">
+                    <img class="img" src="https://image.tmdb.org/t/p/original${imagePath}" alt="" />
+                </div>
+                <div class="info">
+                    <p class="score">${score}<i class="icon fas fa-star"></i></p>
+                    <div id="${idArticle}" class="like" onClick="addFavorite(this.id, this)">`+iconHeart+`</span></div>
+                    <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
+                </div>
+            </div>`
+        )
+        
+    } else {
+        return '';
+    }
+    
 }
 
 const searchMovie = () => {
@@ -95,8 +105,6 @@ const searchMovie = () => {
     $articlesList.innerHTML = "";
 
     const querySearch = document.querySelector('input');
-
-    let requestUrl = ''
 
     if(querySearch.value != ''){
         requestUrl = 'search/movie?&query=' + querySearch.value + '&';
@@ -164,7 +172,7 @@ const nextPage = (element) => {
 
     $articlesList.innerHTML = "";
 
-    loadData('trending/movie/week?', page);
+    loadData(requestUrl, page);
     
 }
 
@@ -175,6 +183,23 @@ const addName = () =>{
     localStorage.setItem('name', newName);
 
     $modalName.classList.add('hidden');
+
+}
+
+const createPaginationElements = (totalPages) =>{
+
+    $pagination.innerHTML = "";
+
+    maxPage = 20;
+
+    if (totalPages < maxPage) {
+       maxPage = totalPages; 
+    } 
+
+    for (let index = 1; index <= maxPage; index++) {
+        $pagination.innerHTML += `<li onClick="nextPage(this)">`+index+`</li>`; 
+    }
+
 
 }
 // End Functions Declarations

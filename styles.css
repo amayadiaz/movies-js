@@ -4,6 +4,11 @@ body{
     margin: 0;
 }
 
+body a{
+    text-decoration: none;
+    color: white;
+}
+
 .article {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 }
@@ -55,12 +60,18 @@ body{
 }
 
 .favorites .icon{
-    color: #E1BE22;
+    color: #FFFFFF;
+}
+
+.header{
+    background: #1C1925;
+    color: #F64145;
 }
 
 .header .title{
     display: inline-block;
-    margin-left: 30px;
+    font-weight: bold;
+    margin: 0 0 0 9%;
 }
 
 .header .title a{
@@ -68,24 +79,35 @@ body{
     text-decoration: none;
 }
 
+.header ul{
+    color: #FFFFFF;
+    display: inline-block;
+    padding: 0px 40px;
+}
+
+.header ul li{
+    display: inline-block; 
+    margin-left: 10px;
+}
+
 .header .user-container{
     display: inline-block;
-    float: right;
-    margin: 20px 30px 0px 0px;
 }
 
 .header .favorites{
-    display: inline-block;
-    float: right;
-    margin: 20px 100px 0px 0px;
     cursor: pointer;
 }
 
-.header .user-container .fa-user{
+.header .user-container .fas{
     margin-right: 5px;
 }
 
-.header .favorites .fa-star{
+.header .divider{
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.header .favorites .fa-bookmark{
     margin-right: 5px;
 }
 
@@ -139,7 +161,7 @@ body{
     font-size: 22px;
 }
 
-.pagination ul li{
+.pagination-container ul li{
     display: inline-block;
     padding: 0;
     background-color: #1D1A26; /* Green */
@@ -151,6 +173,12 @@ body{
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    margin-right: 2px;
+    margin-top: 2px;
+}
+
+.pagination-container ul li:hover{
+    color: #FFFFFF;
 }
 
 .modal-name{
@@ -203,19 +231,9 @@ body{
     grid-gap: 15px;
 }
 
-.header{
-    background: #1C1925;
-    color: #F64145;
-    padding: 1px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 250px);
-    justify-content: center;
-}
-
 .search{
     margin-top: 10px;
     display: grid;
-    grid-template-columns: repeat(1, 30%);
     justify-content: center;
     margin-bottom: 20px;
 }
@@ -248,8 +266,14 @@ body{
     font-size: 16px;
 }
 
-.pagination{
+.pagination-container{
     display: grid;
     justify-content: center;
 }
+
+.selected{
+    color: #F64145;
+}
+
+
 
