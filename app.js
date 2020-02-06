@@ -6,13 +6,14 @@ let defaultFavorites = [];
 let defaultName = 'User';
 let requestUrl = 'trending/movie/week?';
 
-// Elements Variables
+// DOM Elements Variables
 const $articlesList = document.getElementById('articles-list');
 const $modalName = document.querySelector('.modal-name');
 const $userName = document.querySelector('.username');
 const $inputSearch = document.querySelector('.input-search');
 const $inputName = document.querySelector('.input-name');
 const $pagination = document.querySelector('.pagination');
+const $favorites = document.querySelector('.favorites');
 
 // Storage Variables
 let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
@@ -20,7 +21,7 @@ let nameStorage =  localStorage.getItem('name');
 
 // Functions Declarations
 const verifyStorage = (storage, storageItem, defaultValue) => {
-    
+
     if(storage == null){
         localStorage.setItem(storageItem, defaultValue);
     }else{
@@ -28,16 +29,18 @@ const verifyStorage = (storage, storageItem, defaultValue) => {
     }
 
     return defaultValue;
-    
+
 }
 
 const addEnterEvent = (element, button) => {
+
     element.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
             event.preventDefault();
             document.querySelector(button).click();
         }
     })
+    
 }
 
 const loadData = (requestUrl, page) => {
@@ -142,15 +145,39 @@ const closeTrailer = () => {
 
 const addFavorite = (articleId, element) => {
 
-    element.childNodes[0].classList.remove('far');
-    element.childNodes[0].classList.add('fas');
-    
-    defaultFavorites.push(articleId);
-    localStorage.setItem('favorites', JSON.stringify(defaultFavorites));
+    let elementInList = favoritesStorage.includes(articleId);
 
+    if(elementInList){
+
+        element.childNodes[0].classList.remove('fas');
+        element.childNodes[0].classList.add('far');
+
+        for( let index = favoritesStorage.length; index >= 0; index--){ 
+            if ( favoritesStorage[index] == articleId) favoritesStorage.splice(index, 1);
+        }
+        
+        localStorage.setItem('favorites', JSON.stringify(favoritesStorage))
+
+    }else{
+        element.childNodes[0].classList.remove('far');
+        element.childNodes[0].classList.add('fas');
+    
+        defaultFavorites.push(articleId);
+        localStorage.setItem('favorites', JSON.stringify(defaultFavorites));
+    }
+    
 }
 
-const showFavorites = () => {
+const showFavorites = (element) => {
+
+    // Hide search browser
+    $search = document.querySelector('.search');
+    $search.classList.add('hidden');
+
+    // Hide pagination 
+    $paginationContainer = document.querySelector('.pagination-container');
+    $paginationContainer.classList.add('hidden');
+    
     $articlesList.innerHTML = '';
 
     favoritesStorage.forEach(element => {
@@ -160,9 +187,7 @@ const showFavorites = () => {
             return response.json();
         })
         .then(data => {
-
             assignTemplate(data.poster_path, data.vote_average, data.id, true);
-           
         })
     });
 }
@@ -226,6 +251,10 @@ addEnterEvent($inputName, '.button-name');
 
 $inputSearch.addEventListener("input", function(event) {
     searchMovie();
+})
+
+$favorites.addEventListener("click", function(event) {
+    showFavorites(this);
 })
 
 // First Fetch call

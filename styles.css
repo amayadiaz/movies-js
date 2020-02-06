@@ -66,6 +66,7 @@ body a{
 .header{
     background: #1C1925;
     color: #F64145;
+    margin-bottom: 10px;
 }
 
 .header .title{
@@ -113,7 +114,7 @@ body a{
 
 
 .hidden{
-    display: none;
+    display: none !important;
 }
 
 .modal{
