@@ -6,7 +6,6 @@ body{
 
 body a{
     text-decoration: none;
-    color: white;
 }
 
 .article {
@@ -57,10 +56,6 @@ body a{
 }
 .article .info .trailer .icon {
     color: #F64145;
-}
-
-.favorites .icon{
-    color: #FFFFFF;
 }
 
 .header{
@@ -138,10 +133,12 @@ body a{
 
 
 .modal .icon-close{
+    background-color: #F64145;
     color: #FFFFFF;
     cursor: pointer;
     float: right;
     margin-bottom: 10px;
+    padding: 5px;
 }
 
 .modal #iframe-trailer{
@@ -167,7 +164,7 @@ body a{
     padding: 0;
     background-color: #1D1A26; /* Green */
     border: none;
-    color: #F64145;
+    color: #FFFFFF;
     padding: 5px 12px;
     text-align: center;
     text-decoration: none;
@@ -179,7 +176,7 @@ body a{
 }
 
 .pagination-container ul li:hover{
-    color: #FFFFFF;
+    color: #F64145;
 }
 
 .modal-name{
@@ -257,7 +254,7 @@ body a{
 }
 
 .search .button{
-    background-color: #1D1A26; /* Green */
+    background-color: #1D1A26;
     border: none;
     color: #F64145;
     padding: 8px 12px;
@@ -273,7 +270,11 @@ body a{
 }
 
 .selected{
-    color: #F64145;
+    color: #F64145 !important;
+}
+
+#home{
+    cursor: pointer;
 }
 
 

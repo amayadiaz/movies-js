@@ -14,6 +14,7 @@ const $inputSearch = document.querySelector('.input-search');
 const $inputName = document.querySelector('.input-name');
 const $pagination = document.querySelector('.pagination');
 const $favorites = document.querySelector('.favorites');
+const $home = document.getElementById('home');
 
 // Storage Variables
 let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
@@ -168,7 +169,10 @@ const addFavorite = (articleId, element) => {
     
 }
 
-const showFavorites = (element) => {
+const showFavorites = () => {
+
+    $home.classList.remove('selected');
+    $favorites.classList.add('selected');
 
     // Hide search browser
     $search = document.querySelector('.search');
@@ -193,6 +197,9 @@ const showFavorites = (element) => {
 }
 
 const nextPage = (element) => {
+
+    element.classList.add('selected');
+
     const page = element.textContent;
 
     $articlesList.innerHTML = "";
@@ -254,8 +261,25 @@ $inputSearch.addEventListener("input", function(event) {
 })
 
 $favorites.addEventListener("click", function(event) {
-    showFavorites(this);
+    showFavorites();
 })
+
+$home.addEventListener("click", () => {
+    $articlesList.innerHTML = '';
+
+    $favorites.classList.remove('selected');
+    $home.classList.add('selected');
+
+    $favorites.classList.remove('selected');
+    $home.classList.add('selected');
+
+    $search.classList.remove('hidden');
+    $paginationContainer.classList.remove('hidden');
+
+    loadData('trending/movie/week?', '1');
+})
+
+$home.classList.add('selected');
 
 // First Fetch call
 loadData('trending/movie/week?', '1');
