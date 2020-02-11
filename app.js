@@ -15,6 +15,7 @@ const $inputName = document.querySelector('.input-name');
 const $pagination = document.querySelector('.pagination');
 const $favorites = document.querySelector('.favorites');
 const $home = document.getElementById('home');
+const $searchContainer = document.querySelector('.search');
 
 // Storage Variables
 let favoritesStorage =  JSON.parse(localStorage.getItem('favorites'));
@@ -35,7 +36,7 @@ const verifyStorage = (storage, storageItem, defaultValue) => {
 
 const addEnterEvent = (element, button) => {
 
-    element.addEventListener("keyup", function(event) {
+    element.addEventListener("keyup", event => {
         if (event.keyCode === 13) {
             event.preventDefault();
             document.querySelector(button).click();
@@ -44,20 +45,19 @@ const addEnterEvent = (element, button) => {
     
 }
 
-const loadData = (requestUrl, page) => {
+const loadData = (requestUrl, page, moment) => {
 
-    fetch(apiUrl + requestUrl + apiKeyUrl + page)
-    .then(function(response) {
+    fetch(`${apiUrl}${requestUrl}${apiKeyUrl}${page}`)
+    .then(response => {
         return response.json();
     })
-    .then(function(data) {
-
-        displayArticles(data);
-
+    .then(data => {
+        displayArticles(data, moment);
     })
+
 }
 
-const displayArticles = (data) => {
+const displayArticles = (data, moment) => {
 
     data.results.forEach(element => {
         
@@ -67,7 +67,14 @@ const displayArticles = (data) => {
         
     });
 
-    createPaginationElements(data.total_pages);
+    // Moment
+    // 0 = List Movies, Search Movies
+    // 1 = Next Page
+
+    if(moment != 1){
+        createPaginationElements(data.total_pages);
+    }
+
 
 }
 
@@ -78,10 +85,10 @@ const assignTemplate = (poster, vote_average, id, isFavorite) => {
 
 const articleTemplate = (imagePath, score, idArticle, isFavorite) => {
     
-    let iconHeart = '<i class="far fa-bookmark icon"></i>';
+    let iconHeart = `<i class="far fa-bookmark icon"></i>`;
 
     if(isFavorite){
-        iconHeart = '<i class="fas fa-bookmark icon"></i>';
+        iconHeart = `<i class="fas fa-bookmark icon"></i>`;
     }
     
     if (imagePath != null) {
@@ -92,7 +99,7 @@ const articleTemplate = (imagePath, score, idArticle, isFavorite) => {
                 </div>
                 <div class="info">
                     <p class="score">${score}<i class="icon fas fa-star"></i></p>
-                    <div id="${idArticle}" class="like" onClick="addFavorite(this.id, this)">`+iconHeart+`</span></div>
+                    <div id="${idArticle}" class="like" onClick="addFavorite(this.id, this)">${iconHeart}</span></div>
                     <a id="${idArticle}" onClick="showTrailer(this.id)" class="trailer"><span class="text">Play Trailer</span></a>
                 </div>
             </div>`
@@ -116,7 +123,7 @@ const searchMovie = () => {
         requestUrl = 'trending/movie/week?';
     }
 
-    loadData(requestUrl, '1');
+    loadData(requestUrl, '1', 0);
     
 }
 
@@ -124,13 +131,14 @@ const showTrailer = (articleId) => {
     
     const $iframe = document.getElementById('iframe-trailer');
 
-    fetch('https://api.themoviedb.org/3/movie/' + articleId + '/videos?api_key=84ff3251498b1fa0b9f22832083b3196')
+    fetch(`https://api.themoviedb.org/3/movie/${articleId}/videos?api_key=84ff3251498b1fa0b9f22832083b3196`)
     .then(response => {
         return response.json();
     })
     .then(videos => {
-        $iframe.src = 'https://www.youtube.com/embed/' + videos.results[0].key + '?&autoplay=1';
+        $iframe.src = `https://www.youtube.com/embed/${videos.results[0].key}?&autoplay=1`;
     })
+    .catch(error => console.log(error));
 
     const $modal = document.querySelector('.modal');
     $modal.classList.remove('hidden');
@@ -160,6 +168,7 @@ const addFavorite = (articleId, element) => {
         localStorage.setItem('favorites', JSON.stringify(favoritesStorage))
 
     }else{
+        
         element.childNodes[0].classList.remove('far');
         element.childNodes[0].classList.add('fas');
     
@@ -175,8 +184,7 @@ const showFavorites = () => {
     $favorites.classList.add('selected');
 
     // Hide search browser
-    $search = document.querySelector('.search');
-    $search.classList.add('hidden');
+    $searchContainer.classList.add('hidden');
 
     // Hide pagination 
     $paginationContainer = document.querySelector('.pagination-container');
@@ -186,7 +194,7 @@ const showFavorites = () => {
 
     favoritesStorage.forEach(element => {
 
-        fetch('https://api.themoviedb.org/3/movie/' + element + '?api_key=84ff3251498b1fa0b9f22832083b3196')
+        fetch(`https://api.themoviedb.org/3/movie/${element}?api_key=84ff3251498b1fa0b9f22832083b3196`)
         .then(response => {
             return response.json();
         })
@@ -198,13 +206,21 @@ const showFavorites = () => {
 
 const nextPage = (element) => {
 
+    const paginationElements = document.querySelectorAll('.pagination-container li');
+    
+    paginationElements.forEach(paginationElement => {
+        if(paginationElement.classList.contains("selected")){
+            paginationElement.classList.remove('selected');
+        }
+    });
+
     element.classList.add('selected');
 
     const page = element.textContent;
 
     $articlesList.innerHTML = "";
 
-    loadData(requestUrl, page);
+    loadData(requestUrl, page, 1);
     
 }
 
@@ -229,7 +245,7 @@ const createPaginationElements = (totalPages) =>{
     } 
 
     for (let index = 1; index <= maxPage; index++) {
-        $pagination.innerHTML += `<li onClick="nextPage(this)">`+index+`</li>`; 
+        $pagination.innerHTML += `<li onClick="nextPage(this)">${index}</li>`; 
     }
 
 
@@ -256,33 +272,41 @@ $userName.textContent = defaultName;
 addEnterEvent($inputSearch, '.button');
 addEnterEvent($inputName, '.button-name');
 
-$inputSearch.addEventListener("input", function(event) {
+$inputSearch.addEventListener("input", () => {
     searchMovie();
 })
 
-$favorites.addEventListener("click", function(event) {
+$favorites.addEventListener("click", () => {
     showFavorites();
 })
 
 $home.addEventListener("click", () => {
-    $articlesList.innerHTML = '';
 
-    $favorites.classList.remove('selected');
-    $home.classList.add('selected');
+    if(!$home.classList.contains("selected")){
+        
+        $articlesList.innerHTML = '';
 
-    $favorites.classList.remove('selected');
-    $home.classList.add('selected');
+        $favorites.classList.remove('selected');
+        $home.classList.add('selected');
 
-    $search.classList.remove('hidden');
-    $paginationContainer.classList.remove('hidden');
+        $searchContainer.classList.remove('hidden');
+        $paginationContainer.classList.remove('hidden');
 
-    loadData('trending/movie/week?', '1');
+        loadData('trending/movie/week?', '1', 0);
+
+    }
 })
+
+
+// First Fetch call
+loadData('trending/movie/week?', '1', 0);
 
 $home.classList.add('selected');
 
-// First Fetch call
-loadData('trending/movie/week?', '1');
+/*paginationFirstElement = document.querySelectorAll('.pagination-container li');
+console.log(paginationFirstElement);*/
+
+
 
 // END MAIN
 
