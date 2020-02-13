@@ -54,6 +54,7 @@ const loadData = (requestUrl, page, moment) => {
     .then(data => {
         displayArticles(data, moment);
     })
+    .catch(error => console.log(error));
 
 }
 
@@ -201,6 +202,7 @@ const showFavorites = () => {
         .then(data => {
             assignTemplate(data.poster_path, data.vote_average, data.id, true);
         })
+        .catch(error => console.log(error));
     });
 }
 
